@@ -23,7 +23,7 @@ const userControllers = {
   async read(req, res) {
     try {
       const users = await User.find({}, "-password").populate("posts");
-
+      console.log(users);
       res.status(200).send({ users });
     } catch (error) {
       res.status(400).send({ message: `List users fail!`, error });
