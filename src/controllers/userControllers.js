@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require('../models/User');
 
 const userControllers = {
   async create(req, res){
@@ -22,7 +22,7 @@ const userControllers = {
 
   async read(req, res) {
     try {
-      const users = await User.find({}, "-password");
+      const users = await User.find({}, "-password").populate("posts");
 
       res.status(200).send({ users });
     } catch (error) {
@@ -70,7 +70,7 @@ const userControllers = {
   async listSpecificUser(req, res) {
     try {
       const { id } = req.params;
-      const user = await User.findById(id, "-password");
+      const user = await User.findById(id).populate("posts");
 
       if(!user) {
         res.status(400).send({ message: `User not found!` });
@@ -79,6 +79,7 @@ const userControllers = {
       res.status(200).send({ user });
       
     } catch (error) {
+      console.log(error);
       res.status(400).send({ message: `List specific user fail!`, error });
     }
   }
